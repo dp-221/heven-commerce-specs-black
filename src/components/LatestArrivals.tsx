@@ -2,34 +2,55 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useProducts } from '@/hooks/useProducts';
+import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/useAuth';
+import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from 'sonner';
 
 const LatestArrivals = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Premium Cotton Tee",
-      price: "$49",
-      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 2,
-      name: "Designer Jacket",
-      price: "$199",
-      image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 3,
-      name: "Minimalist Watch",
-      price: "$299",
-      image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 4,
-      name: "Classic Sneakers",
-      price: "$129",
-      image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+  const { data: products, isLoading } = useProducts();
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+
+  const handleAddToCart = (productId: string) => {
+    if (!user) {
+      toast.error('Please sign in to add items to cart');
+      return;
     }
-  ];
+    addToCart({ productId, quantity: 1 });
+  };
+
+  if (isLoading) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Latest Arrivals</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Fresh styles just dropped. Be the first to discover our newest pieces
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i} className="border-0 shadow-md bg-white">
+                <CardContent className="p-0">
+                  <Skeleton className="w-full h-64" />
+                  <div className="p-4">
+                    <Skeleton className="h-4 w-3/4 mb-2" />
+                    <Skeleton className="h-4 w-1/2 mb-3" />
+                    <Skeleton className="h-8 w-full" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const latestProducts = products?.slice(0, 4) || [];
 
   return (
     <section className="py-16 bg-gray-50">
@@ -42,12 +63,12 @@ const LatestArrivals = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {latestProducts.map((product) => (
             <Card key={product.id} className="group cursor-pointer border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white">
               <CardContent className="p-0">
                 <div className="relative overflow-hidden">
                   <img
-                    src={product.image}
+                    src={product.images[0] || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'}
                     alt={product.name}
                     className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -55,10 +76,20 @@ const LatestArrivals = () => {
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold text-black mb-2">{product.name}</h3>
-                  <p className="text-lg font-bold text-black mb-3">{product.price}</p>
+                  <div className="flex items-center space-x-2 mb-3">
+                    {product.discount_price ? (
+                      <>
+                        <p className="text-lg font-bold text-black">${product.discount_price}</p>
+                        <p className="text-sm text-gray-500 line-through">${product.price}</p>
+                      </>
+                    ) : (
+                      <p className="text-lg font-bold text-black">${product.price}</p>
+                    )}
+                  </div>
                   <Button 
                     className="w-full bg-black text-white hover:bg-gray-800 transition-colors duration-200"
                     size="sm"
+                    onClick={() => handleAddToCart(product.id)}
                   >
                     Add to Cart
                   </Button>
