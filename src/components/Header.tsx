@@ -4,6 +4,7 @@ import { Search, User, ShoppingCart, Menu, X, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
+import { useNavigate } from 'react-router-dom';
 import { AuthModal } from './auth/AuthModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
@@ -12,11 +13,16 @@ const Header = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user, signOut } = useAuth();
   const { cartCount } = useCart();
+  const navigate = useNavigate();
 
   const handleUserClick = () => {
     if (!user) {
       setShowAuthModal(true);
     }
+  };
+
+  const handleCartClick = () => {
+    navigate('/cart');
   };
 
   return (
@@ -26,12 +32,14 @@ const Header = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-black tracking-tight">HEVEN</h1>
+              <button onClick={() => navigate('/')}>
+                <h1 className="text-2xl font-bold text-black tracking-tight">HEVEN</h1>
+              </button>
             </div>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Home</a>
+              <button onClick={() => navigate('/')} className="text-black hover:text-gray-600 transition-colors duration-200">Home</button>
               <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Collections</a>
               <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Latest</a>
               <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">About</a>
@@ -52,8 +60,8 @@ const Header = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Orders</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>Orders</DropdownMenuItem>
                     <DropdownMenuItem>Wishlist</DropdownMenuItem>
                     <DropdownMenuItem onClick={signOut}>
                       <LogOut className="h-4 w-4 mr-2" />
@@ -67,7 +75,7 @@ const Header = () => {
                 </Button>
               )}
               
-              <Button variant="ghost" size="sm" className="text-black hover:text-gray-600 relative">
+              <Button variant="ghost" size="sm" className="text-black hover:text-gray-600 relative" onClick={handleCartClick}>
                 <ShoppingCart className="h-5 w-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -94,7 +102,7 @@ const Header = () => {
           {isMenuOpen && (
             <div className="md:hidden border-t border-gray-200 py-4">
               <div className="flex flex-col space-y-4">
-                <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Home</a>
+                <button onClick={() => navigate('/')} className="text-black hover:text-gray-600 transition-colors duration-200 text-left">Home</button>
                 <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Collections</a>
                 <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Latest</a>
                 <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">About</a>
@@ -106,7 +114,7 @@ const Header = () => {
                   <Button variant="ghost" size="sm" className="text-black" onClick={handleUserClick}>
                     <User className="h-5 w-5" />
                   </Button>
-                  <Button variant="ghost" size="sm" className="text-black relative">
+                  <Button variant="ghost" size="sm" className="text-black relative" onClick={handleCartClick}>
                     <ShoppingCart className="h-5 w-5" />
                     {cartCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">

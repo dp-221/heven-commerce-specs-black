@@ -7,18 +7,25 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const LatestArrivals = () => {
   const { data: products, isLoading } = useProducts();
   const { addToCart } = useCart();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  const handleAddToCart = (productId: string) => {
+  const handleAddToCart = (e: React.MouseEvent, productId: string) => {
+    e.stopPropagation(); // Prevent navigation when clicking add to cart
     if (!user) {
       toast.error('Please sign in to add items to cart');
       return;
     }
     addToCart({ productId, quantity: 1 });
+  };
+
+  const handleProductClick = (productId: string) => {
+    navigate(`/product/${productId}`);
   };
 
   if (isLoading) {
@@ -64,7 +71,11 @@ const LatestArrivals = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {latestProducts.map((product) => (
-            <Card key={product.id} className="group cursor-pointer border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white">
+            <Card 
+              key={product.id} 
+              className="group cursor-pointer border-0 shadow-md hover:shadow-lg transition-all duration-300 bg-white"
+              onClick={() => handleProductClick(product.id)}
+            >
               <CardContent className="p-0">
                 <div className="relative overflow-hidden">
                   <img
@@ -89,7 +100,7 @@ const LatestArrivals = () => {
                   <Button 
                     className="w-full bg-black text-white hover:bg-gray-800 transition-colors duration-200"
                     size="sm"
-                    onClick={() => handleAddToCart(product.id)}
+                    onClick={(e) => handleAddToCart(e, product.id)}
                   >
                     Add to Cart
                   </Button>
