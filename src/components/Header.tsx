@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, User, Cart, Menu, X } from 'lucide-react';
+import { Search, User, ShoppingCart, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Header = () => {
@@ -34,7 +34,7 @@ const Header = () => {
               <User className="h-5 w-5" />
             </Button>
             <Button variant="ghost" size="sm" className="text-black hover:text-gray-600 relative">
-              <Cart className="h-5 w-5" />
+              <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartCount}
@@ -73,7 +73,7 @@ const Header = () => {
                   <User className="h-5 w-5" />
                 </Button>
                 <Button variant="ghost" size="sm" className="text-black relative">
-                  <Cart className="h-5 w-5" />
+                  <ShoppingCart className="h-5 w-5" />
                   {cartCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {cartCount}
