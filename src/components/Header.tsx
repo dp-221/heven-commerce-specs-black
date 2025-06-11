@@ -42,8 +42,8 @@ const Header = () => {
               <button onClick={() => navigate('/')} className="text-black hover:text-gray-600 transition-colors duration-200">Home</button>
               <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Collections</a>
               <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Latest</a>
-              <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">About</a>
-              <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Contact</a>
+              <button onClick={() => navigate('/about')} className="text-black hover:text-gray-600 transition-colors duration-200">About</button>
+              <button onClick={() => navigate('/contact')} className="text-black hover:text-gray-600 transition-colors duration-200">Contact</button>
             </nav>
 
             {/* Desktop Actions */}
@@ -105,8 +105,8 @@ const Header = () => {
                 <button onClick={() => navigate('/')} className="text-black hover:text-gray-600 transition-colors duration-200 text-left">Home</button>
                 <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Collections</a>
                 <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Latest</a>
-                <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">About</a>
-                <a href="#" className="text-black hover:text-gray-600 transition-colors duration-200">Contact</a>
+                <button onClick={() => navigate('/about')} className="text-black hover:text-gray-600 transition-colors duration-200 text-left">About</button>
+                <button onClick={() => navigate('/contact')} className="text-black hover:text-gray-600 transition-colors duration-200 text-left">Contact</button>
                 <div className="flex items-center space-x-4 pt-4 border-t border-gray-200">
                   <Button variant="ghost" size="sm" className="text-black">
                     <Search className="h-5 w-5" />
