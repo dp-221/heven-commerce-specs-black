@@ -9,7 +9,7 @@ export interface Profile {
   last_name: string;
   phone_number?: string;
   avatar_url?: string;
-  role: string;
+  role: 'customer' | 'admin' | 'product_manager';
   created_at: string;
   updated_at: string;
 }
